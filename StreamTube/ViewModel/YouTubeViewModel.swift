@@ -12,26 +12,24 @@ import SwiftUI
 @MainActor
 class YouTubeViewModel: ObservableObject {
     // Published properties so that SwiftUI views can update when data changes.
+    @Published var searchQuery: String = ""
     @Published var videos: [Video] = []
     @Published var errorMessage: String? = nil
     
     // Instance of the service that handles network requests.
     private let service = YouTubeService()
     
-    // Fetches videos for the provided YouTube channel ID.
-    func fetchVideos(channelId: String) {
-        // Use a Task to call our async method.
+    // Performs a video search based on the current search query.
+    func searchVideos() {
         Task {
-            let result = await service.fetchVideos(channelId: channelId, maxResults: 20)
+            let result = await service.fetchVideos(query: searchQuery)
             switch result {
             case .success(let response):
-                // Assign the returned videos to the published property.
                 self.videos = response.items
-                self.errorMessage = nil  // Clear any previous error message.
+                self.errorMessage = nil
             case .failure(let error):
-                // If an error occurs, set the errorMessage.
                 self.errorMessage = error.customMessage
-                self.videos = []  // Optionally, clear out any previous videos.
+                self.videos = []
             }
         }
     }

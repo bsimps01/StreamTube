@@ -11,8 +11,8 @@ struct YouTubeService: HTTPClient {
     let session: URLSession = .shared
     
     // Fetches videos from a specific channel.
-    func fetchVideos(channelId: String, maxResults: Int = 20) async -> Result<YouTubeResponse, RequestError> {
-        return await sendRequest(endpoint: YouTubeEndpoint.searchVideos(channelId: channelId, maxResults: maxResults),
+    func fetchVideos(query: String, maxResults: Int = 20) async -> Result<YouTubeResponse, RequestError> {
+        return await sendRequest(endpoint: YouTubeEndpoint.searchVideos(query: query, maxResults: maxResults),
                                  responseModel: YouTubeResponse.self,
                                  session: session)
     }

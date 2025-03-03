@@ -11,17 +11,26 @@ struct ContentView: View {
     // Observe the view model.
     @StateObject private var viewModel = YouTubeViewModel()
     
-    // Replace with your desired channel ID.
-    let channelId = "@Benjamin5311"
-    
     var body: some View {
         NavigationView {
             VStack {
-                if let errorMessage = viewModel.errorMessage {
-                    Text("Error: \(errorMessage)")
-                        .foregroundColor(.red)
-                }
-                
+                HStack {
+                    TextField("Search YouTube", text: $viewModel.searchQuery)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                            Button("Search") {
+                                viewModel.searchVideos()
+                                    }
+                                }
+                            .padding()
+                                
+                    if let error = viewModel.errorMessage {
+                        Text("Error: \(error)")
+                                .foregroundColor(.red)
+                                .padding()
+                            }
+                                
                 List(viewModel.videos) { video in
                     VStack(alignment: .leading) {
                         Text(video.title)
@@ -29,20 +38,18 @@ struct ContentView: View {
                         Text(video.description)
                             .font(.subheadline)
                             .lineLimit(2)
-                    }
-                }
-                .listStyle(PlainListStyle())
-            }
+                                }
+                            .padding(.vertical, 4)
+                            }
+                        .listStyle(PlainListStyle())
+                            }
             .navigationTitle("YouTube Videos")
-            .onAppear {
-                viewModel.fetchVideos(channelId: channelId)
-            }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ContentView()
+//    }
+//}
