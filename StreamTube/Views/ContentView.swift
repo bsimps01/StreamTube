@@ -20,7 +20,7 @@ struct ContentView: View {
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
                             Button("Search") {
-                                viewModel.searchVideos()
+                                    viewModel.searchVideos()
                                     }
                                 }
                             .padding()
@@ -32,17 +32,21 @@ struct ContentView: View {
                             }
                                 
                 List(viewModel.videos) { video in
-                    VStack(alignment: .leading) {
-                        Text(video.title)
-                            .font(.headline)
-                        Text(video.description)
-                            .font(.subheadline)
-                            .lineLimit(2)
-                                }
-                            .padding(.vertical, 4)
-                            }
+//                    VStack(alignment: .leading) {
+//                        Text(video.title)
+//                            .font(.headline)
+//                        Text(video.description)
+//                            .font(.subheadline)
+//                            .lineLimit(2)
+//                                }
+//                            .padding(.vertical, 4)
+//                            }
+                    NavigationLink(destination: VideoDetailView(video: video)) {
+                        VideoRow(video: video)
+                    }
+                }
                         .listStyle(PlainListStyle())
-                            }
+                        }
             .navigationTitle("YouTube Videos")
         }
     }
